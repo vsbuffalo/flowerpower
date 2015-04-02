@@ -1,9 +1,10 @@
 Package: flowerpower
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Title: Download sample data from a Parrot FlowerPower plant sensor.
+Version: 0.0.1
 Authors@R: 'Vince Buffalo <vsbuffaloAAAAA@gmail.com> [aut, cre]'
-Description: What the package does (one paragraph)
+Description: Connect to the Parrot FlowerPower API and download data.
 Depends: R (>= 3.1.2)
-Imports: httr, lubridate
+Imports: httr, lubridate, R6
 License: BSD
 LazyData: true
+

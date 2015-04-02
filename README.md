@@ -17,14 +17,14 @@ still in **alpha** — use with caution.
     6 2015-03-10 23:04:00      7.066480                28.31073    16.91436
 
 
-## Design
+### Design
 
 An R6 class stores state and lower-level methods for getting data from the
 server, and higher-level S3 methods call these methods and reshape
 results. Users interact with these higher-level functions, but I leave the
 object methods public for developers that want to do their own hacking.
 
-## Todo
+### Todo
 
 - Refresh auth token.
 
