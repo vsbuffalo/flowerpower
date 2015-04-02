@@ -1,13 +1,13 @@
-## flowerpower — R API to Parrot's Flower Power Sensor
+## flowerpower — access Parrot's Flower Power Sensor from R
 
 [![Travis-CI Build Status](https://travis-ci.org/vsbuffalo/flowerpower.png?branch=master)](https://travis-ci.org/vsbuffalo/flowerpower)
 
 
 ![timeseries plot of temperature data from FlowerPower unit](https://raw.githubusercontent.com/vsbuffalo/flowerpower/master/inst/extdata/example.png)
 
-An R API to Parrot's awesome
+An R package to access data from Parrot's awesome
 [Flower Power sensor](http://www.parrot.com/usa/products/flower-power/). This is
-still in **alpha** — use with caution.
+still in **alpha**.
 
     > fp <- flowerpower(user, pass, id, secret)
     > get_locations(fp) # get location IDs
@@ -24,6 +24,8 @@ still in **alpha** — use with caution.
     > p <- ggplot(s) + geom_line(aes(x=capture_ts, y=air_temperature_celsius))
     > p <- p + xlab("time") + ylab("temperature (C)")
     > p
+
+There's also a `get_fertilizer()` function to access these data.
 
 ### Design
 
