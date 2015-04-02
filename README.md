@@ -2,6 +2,9 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/vsbuffalo/flowerpower.png?branch=master)](https://travis-ci.org/vsbuffalo/flowerpower)
 
+
+![timeseries plot of temperature data from FlowerPower unit](https://raw.githubusercontent.com/vsbuffalo/flowerpower/master/inst/extdata/example.png)
+
 An R API to Parrot's awesome
 [Flower Power sensor](http://www.parrot.com/usa/products/flower-power/). This is
 still in **alpha** — use with caution.
