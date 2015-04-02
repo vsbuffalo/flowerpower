@@ -8,11 +8,11 @@ FPDEBUG <- FALSE
 
 stop_for_status <- function(x) {
   if (FPDEBUG)
-    if (!httr:::successful(x)) {
+    if (!httr::successful(x)) {
       print(x)
       browser()
     }
-  httr:::stop_for_status(x)
+  httr::stop_for_status(x)
 }
 
 # URL stuff
@@ -22,7 +22,7 @@ FPAPI_GETLOCS <- fpurl("sensor_data/v3/sync")
 FPAPI_GETSAMPS <- fpurl("sensor_data/v2/sample/location/")
 FPAPI_AUTH <- fpurl("user/v1/authenticate")
 
-#' Internal function to create data ranges (since max date span is 10 days)
+# Internal function to create data ranges (since max date span is 10 days)
 date_ranges <- function(from, to=now(), interval=days(9)) {
   n <- ceiling(as.period(to - from)/interval)
   out <- vector('list', n)
@@ -34,7 +34,7 @@ date_ranges <- function(from, to=now(), interval=days(9)) {
   out
 }
 
-#' All internal methods are in R6, API funs in S3
+# All internal methods are in R6, API funs in S3
 flowerpower_factory <- R6::R6Class(
   "flowerpower",
    public=list(
@@ -90,6 +90,12 @@ flowerpower_factory <- R6::R6Class(
      }
     ))
 
+#' Create new API connection to Parrot's FlowerPower sensor
+#'
+#' @param user username
+#' @param pass password
+#' @param client_id client identifier
+#' @param client_secret client secret key
 #' @export
 flowerpower <- function(user, pass, client_id, client_secret) {
   flowerpower_factory$new(user, pass, client_id, client_secret)
