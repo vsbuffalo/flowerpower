@@ -9,6 +9,10 @@ An R package to access data from Parrot's awesome
 [Flower Power sensor](http://www.parrot.com/usa/products/flower-power/). This is
 still in **alpha**.
 
+FlowerPower's API is a bit strange and requires *a lot* of authentication keys,
+including your username and password to the FlowerPower site (not the dev
+portal). Here is an example:
+
     > fp <- flowerpower(user, pass, id, secret)
     > get_locations(fp) # get location IDs
     > s <- get_samples(fp, location='1W2zIGfgEF14220_YOURLOCATIONKEY')
