@@ -1,5 +1,7 @@
 ## flowerpower — R API to Parrot's Flower Power Sensor
 
+[![Travis-CI Build Status](https://travis-ci.org/vsbuffalo/flowerpower.png?branch=master)](https://travis-ci.org/vsbuffalo/flowerpower)
+
 An R API to Parrot's awesome
 [Flower Power sensor](http://www.parrot.com/usa/products/flower-power/). This is
 still in **alpha** — use with caution.
