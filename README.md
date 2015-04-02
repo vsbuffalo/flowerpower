@@ -18,6 +18,9 @@ still in **alpha** — use with caution.
     5 2015-03-10 22:49:00      7.567640                28.86598    16.66856
     6 2015-03-10 23:04:00      7.066480                28.31073    16.91436
 
+    > p <- ggplot(s) + geom_line(aes(x=capture_ts, y=air_temperature_celsius))
+    > p <- p + xlab("time") + ylab("temperature (C)")
+    > p
 
 ### Design
 
