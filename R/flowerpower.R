@@ -152,3 +152,31 @@ get_samples.flowerpower <- function(obj, location) {
   out$capture_ts <- ymd_hms(out$capture_ts)
   out
 }
+
+
+#' Get fertilizer samples.
+#'
+#' @param obj a flowerpower object
+#' @param location a location identifier
+#'
+#' @export
+get_fertilizer <- function(obj, location) {
+  UseMethod("get_fertilizer")
+}
+
+#' Get fertilizer samples.
+#'
+#' @param obj a flowerpower object
+#' @param location a location identifier
+#'
+#' @export
+get_fertilizer.flowerpower <- function(obj, location) {
+  obj$check_sync()
+  dt <- obj$get_data(location)
+  tmp <- as.data.frame(do.call(rbind, dt$fertilizer), stringsAsFactors=FALSE)
+  # bit hacky; TODO
+  out <- data.frame(lapply(tmp, unlist), stringsAsFactors=FALSE)
+  out$watering_cycle_end_date_time_utc <- ymd_hms(out$watering_cycle_end_date_time_utc)
+  out$watering_cycle_start_date_time_utc <- ymd_hms(out$watering_cycle_start_date_time_utc)
+  out
+}
