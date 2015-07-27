@@ -7,6 +7,7 @@ options(lubridate.verbose = FALSE)
 FPDEBUG <- FALSE
 
 stop_for_status <- function(x) {
+  # a switch to catch HTTP errors when in debug mode
   if (FPDEBUG)
     if (!httr::successful(x)) {
       print(x)
@@ -31,6 +32,15 @@ date_ranges <- function(from, to=now(), interval=days(9)) {
     out[[i]] <- c(last, last + interval)
     last <- last + interval
   }
+  out
+}
+
+unfold_list <- function(x, el) {
+  # take a list of elements, extract and bind an inner list of list of rows
+  # #yodawg #ihatenestedlists
+  out <- do.call(rbind, lapply(x, function(u) {
+                          as.data.frame(do.call(rbind, u[[el]]))
+                        }))
   out
 }
 
@@ -73,16 +83,25 @@ flowerpower_factory <- R6::R6Class(
      get_data=function(location, from=NULL, to=NULL) {
        # NOTE: returns list of each time range (lower-level fun)
        if (!is.null(from) || !is.null(to)) stop("not implemented")
+       # plant assigned date is earliest date
        assigned_data <- ymd_hms(get_locations(self, location)$plant_assigned_date)
        rngs <- date_ranges(assigned_data, interval=days(10))
-       do.call(c, lapply(rngs, function(rng) {
+       out_lst <- lapply(rngs, function(rng) {
          rng <- as.character(rng)
          qry <- list(from_datetime_utc=rng[1], to_datetime_utc=rng[2])
          locurl <- paste0(FPAPI_GETSAMPS, location)
          r <- GET(locurl, query=qry, self$auth_header)
          stop_for_status(r)
-         content(r)
-       }))
+         cnt <- content(r)
+         cnt
+       })
+       # now, merge all list elements (across date ranges)
+      samples <- unfold_list(out_lst, 'samples')
+      fertilizer <- unfold_list(out_lst, 'fertilizer')
+      merged <- out_lst
+      merged$samples <- samples
+      merged$fertilizer <- fertilizer
+      merged
      },
      check_sync=function() {
        if (is.null(self$last_sync))
@@ -152,9 +171,7 @@ get_samples <- function(obj, location) {
 get_samples.flowerpower <- function(obj, location) {
   obj$check_sync()
   dt <- obj$get_data(location)
-  tmp <- as.data.frame(do.call(rbind, dt$samples), stringsAsFactors=FALSE)
-  # bit hacky; TODO
-  out <- data.frame(lapply(tmp, unlist), stringsAsFactors=FALSE)
+  out <- dt$samples
   out$capture_ts <- ymd_hms(out$capture_ts)
   out
 }
@@ -179,9 +196,7 @@ get_fertilizer <- function(obj, location) {
 get_fertilizer.flowerpower <- function(obj, location) {
   obj$check_sync()
   dt <- obj$get_data(location)
-  tmp <- as.data.frame(do.call(rbind, dt$fertilizer), stringsAsFactors=FALSE)
-  # bit hacky; TODO
-  out <- data.frame(lapply(tmp, unlist), stringsAsFactors=FALSE)
+  out <- dt$fertilizer 
   out$watering_cycle_end_date_time_utc <- ymd_hms(out$watering_cycle_end_date_time_utc)
   out$watering_cycle_start_date_time_utc <- ymd_hms(out$watering_cycle_start_date_time_utc)
   out
